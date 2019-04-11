@@ -174,15 +174,15 @@ def run(cnn, normalization_mean, normalization_std, content_img, style_img, inpu
 
             iteration[0]+= 1
 
-            writer.add_scalar('data/style_loss', style_score, iteration)
-            writer.add_scalar('data/content_loss', content_score, iteration)
-            writer.add_scalar('data/loss', loss, iteration)
+            writer.add_scalar('data/style_loss', style_score, iteration[0])
+            writer.add_scalar('data/content_loss', content_score, iteration[0])
+            writer.add_scalar('data/loss', loss, iteration[0])
 
             return style_score+content_score
 
         optimizer.step(closure())
         image = unloader(input_image)
-        writer.add_image(image, iteration)
+        writer.add_image(image, iteration[0])
 
 
     input_image = input_image.data.clamp_(0,1)
