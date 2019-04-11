@@ -115,14 +115,14 @@ def get_style_model_and_losses(cnn, normalization_mean, normalization_std, style
         model.add_module(name, layer)
 
         if name in content_layers:
-            target = model(content_image).detach()
+            target = model(content_img).detach()
             content_loss = Content_loss(target)
             model.add_module("content_loss_{}".format(i), content_loss)
             content_losses.append(content_loss)
             idx = i
 
         if name in style_layers:
-            target_feature = model(style_image).detach()
+            target_feature = model(style_img).detach()
             style_loss = Style_loss(target_feature)
             model.add_module("styel_loss_{}".format(i), style_loss)
             style_losses.append(style_loss)
