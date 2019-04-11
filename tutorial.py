@@ -161,10 +161,12 @@ def run(cnn, normalization_mean, normalization_std, content_img, style_img, inpu
 
             for i in style_losses:
                 style_score+=i.loss
+                print(i, i.loss)
 
             for i in content_losses:
                 content_score+=i.loss
-
+                print(i, i.loss)
+                
             style_score = style_weight*style_score
             content_score = content_weight*content_score
             loss = style_score+content_score
