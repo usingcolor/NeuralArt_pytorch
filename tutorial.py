@@ -18,7 +18,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 writer = SummaryWriter('log')
 
 
-size = 256
+size = 512
 loader = transforms.Compose([transforms.Resize(size), transforms.ToTensor()])
 unloader = transforms.ToPILImage()
 
@@ -148,8 +148,8 @@ def run(cnn, normalization_mean, normalization_std, content_img, style_img, inpu
 
     print("Optimizing")
 
-    global iteration = 0
-    while iteration <= num_steps:
+    iteration = [0]
+    while iteration[0] <= num_steps:
 
         def closure():
             input_image.data.clamp_(0,1)
@@ -170,7 +170,7 @@ def run(cnn, normalization_mean, normalization_std, content_img, style_img, inpu
             loss = style_score+content_score
             loss.backward()
 
-            iteration+= 1
+            iteration[0]+= 1
 
             writer.add_scalar('data/style_loss', style_score, iteration)
             writer.add_scalar('data/content_loss', content_score, iteration)
@@ -201,7 +201,7 @@ def run(cnn, normalization_mean, normalization_std, content_img, style_img, inpu
 #     style_path = style_image_path
 #     content_path = content_image_path
 
-output = run(cnn, cnn_normalization_mean, cnn_normalization_std, content_image, style_image, input_image, num_steps, weight_rate)
+output = run(cnn, cnn_normalization_mean, cnn_normalization_std, content_image, style_image, input_image)
 output_image = unloader(output)
 
 
