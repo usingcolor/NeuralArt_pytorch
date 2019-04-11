@@ -129,7 +129,13 @@ def get_style_model_and_losses(cnn, normalization_mean, normalization_std, style
             style_losses.append(style_loss)
             idx = len(model)
 
-        model = model[:idx+1]
+        # model = model[:idx+1]
+
+        for i in range(len(model) - 1, -1, -1):
+            if isinstance(model[i], Content_loss) or isinstance(model[i], Style_loss):
+                break
+
+        model = model[:(i + 1)]
 
         return model, style_losses, content_losses
 
@@ -161,11 +167,8 @@ def run(cnn, normalization_mean, normalization_std, content_img, style_img, inpu
 
             for i in style_losses:
                 style_score+=i.loss
-                print(i, i.loss)
-
             for i in content_losses:
                 content_score+=i.loss
-                print(i, i.loss)
 
             style_score = style_weight*style_score
             content_score = content_weight*content_score
