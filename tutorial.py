@@ -184,9 +184,10 @@ def run(cnn, normalization_mean, normalization_std, content_img, style_img, inpu
             return style_score+content_score
 
         optimizer.step(closure)
-        image = input_image.cpu().clone()
-        image = image.data.clamp_(0,1)
-        image = image.unsqueeze(0)
+
+        image = input_image.data.clamp_(0,1)
+        image = image.cpu().clone()
+        image = image.squeeze(0)
         image = unloader(image)
         writer.add_image(image, iteration[0])
 
@@ -210,6 +211,8 @@ def run(cnn, normalization_mean, normalization_std, content_img, style_img, inpu
 #     content_path = content_image_path
 
 output = run(cnn, cnn_normalization_mean, cnn_normalization_std, content_image, style_image, input_image)
+output_image = output.cpu().clone()
+output_image = output_image.sqeeze(0)
 output_image = unloader(output)
 
 
