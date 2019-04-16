@@ -189,7 +189,7 @@ def run(cnn, normalization_mean, normalization_std, content_img, style_img, inpu
         image = image.cpu().clone()
         image = image.squeeze(0)
         image = unloader(image)
-        writer.add_image(image, iteration[0])
+        writer.add_image("image", image, iteration[0])
 
 
     input_image = input_image.data.clamp_(0,1)
